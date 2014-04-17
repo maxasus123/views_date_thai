@@ -1,0 +1,63 @@
+<?php
+/**
+ * @file
+ * Easy Social Views hooks.
+ */
+
+/**
+ * Implements hook_views_data().
+ */
+function views_date_thai_views_data() {
+  $data['node']['veiws_date_thai'] = array(
+    'field' => array(
+      'title' => t('Date Thai'),
+      'help' => t('Display Date Thai.'),
+      'handler' => 'views_date_thai_handler_field',
+    ),
+  );
+  return $data;
+}
+
+/**
+ * Update: 21Feb14
+ * - helper function to get formated date in buddhist
+ */
+function views_date_thai_get_formatted_date($timestamp, $format){
+  views_date_thai_escape_year($format);
+  $formatted_date = format_date($timestamp, 'custom', $format);
+  views_date_thai_replace_year($timestamp, $formatted_date);
+  return $formatted_date;
+}
+
+/**
+ * Update: 21Feb14
+ * - helper function to escape year string from format
+ */
+function views_date_thai_escape_year(&$format){
+  if(strpos($format,'y') !== false){
+    $format = str_replace('y','[\y\y]',$format);
+  }
+  
+  if(strpos($format,'Y') !== false){
+    $format = str_replace('Y','[\Y\Y\Y\Y]',$format);
+  }
+}
+
+/**
+ * Update: 21Feb14
+ * - helper function to replace escaped formatted year string with buddhist year
+ */
+function views_date_thai_replace_year($timestamp, &$formatted_date_with_escape){
+
+  if(strpos($formatted_date_with_escape, '[yy]')!==false){
+    $old = (int)date('y',  $timestamp);
+    $new = $old+43;
+    $formatted_date_with_escape = str_replace('[yy]',$new, $formatted_date_with_escape);
+  }
+  
+  if(strpos($formatted_date_with_escape, '[YYYY]')!==false){
+    $old = (int)date('Y',  $timestamp);
+    $new = $old+543;
+    $formatted_date_with_escape = str_replace('[YYYY]',$new, $formatted_date_with_escape);
+  }
+}
