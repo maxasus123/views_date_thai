@@ -3,7 +3,7 @@ description = Views show date thai +543.
 package = Hugsolution
 core = 7.x
 ; Views handler
-files[] = views/views_date_thai_handler_field.inc
+files[] = views/views_date_thai_handler_field_date.inc
 ; Information added by Drupal.org packaging script on 2014-02-12
 version = "7.x-1.0"
 core = "7.x"

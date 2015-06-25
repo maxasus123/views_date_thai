@@ -14,8 +14,6 @@ class views_date_thai_handler_field extends views_handler_field {
       // This way there's no need to node_load() on render().
       $this->additional_fields['nid'] = 'nid';
       $this->additional_fields['type'] = 'type';
-      $this->additional_fields['language'] = 'language';
-      $this->additional_fields['title'] = 'title';
       $this->additional_fields['created'] = 'created';
   }
 
@@ -48,10 +46,6 @@ class views_date_thai_handler_field extends views_handler_field {
     $custom_format = $this->options['custom_date_format'];
      // Render your content.
     $node = new stdClass;
-    $node->nid = $values->{$this->aliases['nid']};
-    $node->type = $values->{$this->aliases['type']};
-    $node->language = $values->{$this->aliases['language']};
-    $node->title = $values->{$this->aliases['title']};
     $node->created = $values->{$this->aliases['created']};
 
      return views_date_thai_get_formatted_date($node->created,$custom_format);
