@@ -87,3 +87,22 @@ function views_date_thai_replace_year($timestamp, &$formatted_date_with_escape){
     $formatted_date_with_escape = str_replace('[YYYY]',$new, $formatted_date_with_escape);
   }
 }
+
+
+/**
+ * Implements hook_process_node().
+ *
+ * Use hook_process_node() rather than hook_preprocess_node() as themes might
+ * override the submitted variable unconditionally.
+ */
+function views_date_thai_process_node(&$variables) {
+  $node = $variables['elements']['#node'];
+  $view_mode = $variables['view_mode'];
+  $variables['date'] = views_date_thai_get_formatted_date($node->created,'l, F j, Y - H:i');
+  $variables['submitted'] = t('Submitted by !username on !datetime', 
+    array(
+      '!username' => $variables['name'],
+      '!datetime' => $variables['date']
+      ));
+}
+
