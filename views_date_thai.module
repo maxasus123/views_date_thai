@@ -3,19 +3,49 @@
  * @file
  * Easy Social Views hooks.
  */
+/**
+ * Implementation of hook_views_api().
+ */
+function views_date_thai_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'views_date_thai'),
+  );
+}
+
+
+
 
 /**
- * Implements hook_views_data().
+ * Implementation of hook_views_data_alter().
  */
-function views_date_thai_views_data() {
-  $data['node']['veiws_date_thai'] = array(
-    'field' => array(
-      'title' => t('Date Thai'),
-      'help' => t('Display Date Thai.'),
-      'handler' => 'views_date_thai_handler_field',
+function views_date_thai_views_data_alter(&$data) {
+  foreach ($data as $table => $config) {
+    foreach ($config as $item => $item_config) {
+      if (isset($item_config['field']['handler']) && $item_config['field']['handler'] == 'views_handler_field_date') {
+        $data[$table][$item]['field']['handler'] = 'views_date_thai_handler_field_date';
+      }
+    }
+  }
+ 
+  return $data;
+}
+
+/**
+ * Implementation of hook_views_handlers().
+ */
+function views_date_thai_views_handlers() {
+  return array(
+    'info' => array(
+      'path' => drupal_get_path('module', 'views_date_thai') . '/views',
+    ),
+    'handlers' => array(
+      'views_date_thai_handler_field_date' => array(
+        'parent' => 'views_handler_field_date',
+        'file' => 'views_date_thai_handler_field_date.inc',
+      ),
     ),
   );
-  return $data;
 }
 
 /**
