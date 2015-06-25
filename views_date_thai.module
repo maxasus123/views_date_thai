@@ -1,19 +1,14 @@
 <?php
-/**
- * @file
- * Easy Social Views hooks.
- */
+
 /**
  * Implementation of hook_views_api().
  */
 function views_date_thai_views_api() {
   return array(
     'api' => 3,
-    'path' => drupal_get_path('module', 'views_date_thai'),
+    'path' => drupal_get_path('module', 'views_thaibe'),
   );
 }
-
-
 
 
 /**
@@ -30,14 +25,14 @@ function views_date_thai_views_data_alter(&$data) {
  
   return $data;
 }
-
+ 
 /**
  * Implementation of hook_views_handlers().
  */
 function views_date_thai_views_handlers() {
   return array(
     'info' => array(
-      'path' => drupal_get_path('module', 'views_date_thai') . '/views',
+      'path' => drupal_get_path('module', 'views_thaibe') . '/handlers',
     ),
     'handlers' => array(
       'views_date_thai_handler_field_date' => array(
@@ -47,6 +42,7 @@ function views_date_thai_views_handlers() {
     ),
   );
 }
+
 
 /**
  * Update: 21Feb14
@@ -91,3 +87,22 @@ function views_date_thai_replace_year($timestamp, &$formatted_date_with_escape){
     $formatted_date_with_escape = str_replace('[YYYY]',$new, $formatted_date_with_escape);
   }
 }
+
+
+/**
+ * Implements hook_process_node().
+ *
+ * Use hook_process_node() rather than hook_preprocess_node() as themes might
+ * override the submitted variable unconditionally.
+ */
+function views_date_thai_process_node(&$variables) {
+  $node = $variables['elements']['#node'];
+  $view_mode = $variables['view_mode'];
+  $variables['date'] = views_date_thai_get_formatted_date($node->created,'l, F j, Y - H:i');
+  $variables['submitted'] = t('Submitted by !username on !datetime', 
+    array(
+      '!username' => $variables['name'],
+      '!datetime' => $variables['date']
+      ));
+}
+
