@@ -1,19 +1,14 @@
 <?php
-/**
- * @file
- * Easy Social Views hooks.
- */
+
 /**
  * Implementation of hook_views_api().
  */
 function views_date_thai_views_api() {
   return array(
     'api' => 3,
-    'path' => drupal_get_path('module', 'views_date_thai'),
+    'path' => drupal_get_path('module', 'views_thaibe'),
   );
 }
-
-
 
 
 /**
@@ -30,14 +25,14 @@ function views_date_thai_views_data_alter(&$data) {
  
   return $data;
 }
-
+ 
 /**
  * Implementation of hook_views_handlers().
  */
 function views_date_thai_views_handlers() {
   return array(
     'info' => array(
-      'path' => drupal_get_path('module', 'views_date_thai') . '/views',
+      'path' => drupal_get_path('module', 'views_thaibe') . '/handlers',
     ),
     'handlers' => array(
       'views_date_thai_handler_field_date' => array(
@@ -47,6 +42,7 @@ function views_date_thai_views_handlers() {
     ),
   );
 }
+
 
 /**
  * Update: 21Feb14
