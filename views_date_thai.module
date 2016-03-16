@@ -6,7 +6,7 @@
 function views_date_thai_views_api() {
   return array(
     'api' => 3,
-    'path' => drupal_get_path('module', 'views_thaibe'),
+    'path' => drupal_get_path('module', 'views_date_thai'),
   );
 }
 
@@ -32,7 +32,7 @@ function views_date_thai_views_data_alter(&$data) {
 function views_date_thai_views_handlers() {
   return array(
     'info' => array(
-      'path' => drupal_get_path('module', 'views_thaibe') . '/handlers',
+      'path' => drupal_get_path('module', 'views_date_thai') . '/handlers',
     ),
     'handlers' => array(
       'views_date_thai_handler_field_date' => array(
