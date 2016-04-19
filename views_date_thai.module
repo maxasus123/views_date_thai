@@ -10,7 +10,6 @@ function views_date_thai_views_api() {
   );
 }
 
-
 /**
  * Implementation of hook_views_data_alter().
  */
@@ -22,10 +21,9 @@ function views_date_thai_views_data_alter(&$data) {
       }
     }
   }
- 
   return $data;
 }
- 
+
 /**
  * Implementation of hook_views_handlers().
  */
@@ -43,6 +41,29 @@ function views_date_thai_views_handlers() {
   );
 }
 
+/**
+ * Update: 21Feb14
+ * - Alert the display/formatting result
+ */
+function views_date_thai_date_formatter_dates_alter(&$dates, $context) {
+    $date1Object = $dates['value']['local']['object'];
+  if($date1Object) $date1ts = $date1Object->format("U");
+    $date2Object = $dates['value2']['local']['object'];
+  if($date2Object) $date2ts = $date2Object->format("U");
+    $format = $context['format'];
+    $is_thai = $context['entity']->language;
+  if($is_thai == 'th'){
+    if($date1ts==$date2ts){
+      $formatted_date = views_date_thai_get_formatted_date($date1ts, $format);
+      $dates['value']['formatted'] = $formatted_date;
+      $dates['value2']['formatted'] = $formatted_date;
+    }
+    else{
+      $dates['value']['formatted'] = views_date_thai_get_formatted_date($date1ts, $format);;
+      $dates['value2']['formatted'] = views_date_thai_get_formatted_date($date2ts, $format);;
+    }
+  }
+}
 
 /**
  * Update: 21Feb14
@@ -63,7 +84,7 @@ function views_date_thai_escape_year(&$format){
   if(strpos($format,'y') !== false){
     $format = str_replace('y','[\y\y]',$format);
   }
-  
+
   if(strpos($format,'Y') !== false){
     $format = str_replace('Y','[\Y\Y\Y\Y]',$format);
   }
@@ -80,7 +101,7 @@ function views_date_thai_replace_year($timestamp, &$formatted_date_with_escape){
     $new = $old+43;
     $formatted_date_with_escape = str_replace('[yy]',$new, $formatted_date_with_escape);
   }
-  
+
   if(strpos($formatted_date_with_escape, '[YYYY]')!==false){
     $old = (int)date('Y',  $timestamp);
     $new = $old+543;
@@ -105,4 +126,3 @@ function views_date_thai_process_node(&$variables) {
       '!datetime' => $variables['date']
       ));
 }
-
